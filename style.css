@@ -1,0 +1,188 @@
+html {
+  height: 100%;
+  background-color: #00095C;
+  background-image: -webkit-gradient(radial, 50% 25%, 600, 50% 10%, 150, from(#00095C), to(#093C80));
+  background-image: -moz-radial-gradient(50% 25% 90deg, ellipse closest-corner, #093C80, #00095C);
+  font: normal normal 14px/18px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: rgba(255, 255, 255, .5);
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  color: rgba(255, 255, 255, .5);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+#menorah {
+  width: 600px;
+  position: relative;
+  margin: 400px auto 0 auto;
+}
+
+.branch {
+  border-width: 0 30px 30px;
+  border-color: #eebb33;
+  border-style: ridge;
+  padding: 0 34px 25px;
+  -webkit-border-top-left-radius: 0 !important;
+  -webkit-border-top-right-radius: 0 !important;
+  -moz-border-radius-topleft: 0 !important;
+  -moz-border-radius-topright: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  position: relative;
+}
+
+#branch_1 {
+  -moz-border-radius: 280px;
+  -webkit-border-radius: 280px;
+  border-radius: 280px;
+}
+
+#branch_2 {
+  -moz-border-radius: 200px;
+  -webkit-border-radius: 200px;
+  border-radius: 200px;
+}
+
+#branch_3 {
+  -moz-border-radius: 140px;
+  -webkit-border-radius: 140px;
+  border-radius: 140px;
+}
+
+#branch_4 {
+  -moz-border-radius: 80px;
+  -webkit-border-radius: 80px;
+  border-radius: 80px;
+  padding-top: 30px;
+}
+
+#branch_middle {
+  padding: 0;
+  border-right: 0;
+  border-bottom: 0;
+  height: 400px;
+  position: absolute;
+  top: -30px;
+  left: 63px;
+}
+
+.hole {
+  width: 40px;
+  height: 10px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #eebb33;
+  position: absolute;
+  top: -5px;
+  left: -35px;
+}
+
+.hole.right {
+  left: auto;
+  right: -35px;
+}
+
+#base {
+  width: 50%;
+  background-color: #eebb33;
+  margin: 100px auto 0 auto;
+  height: 100px;
+  -moz-border-radius: 100px 100px 0 0;
+  -webkit-border-radius: 100px 100px 0 0;
+  border-radius: 100px 100px 0 0;
+  -moz-box-shadow: -100px 0 0 0 rgba(0,0,0,.35) inset;
+  -webkit-box-shadow: -100px 0 0 0 rgba(0,0,0,.35) inset;
+}
+
+.candle {
+  position: relative;
+  width: 30px;
+  background-color: blue;
+  position: absolute;
+  height: 250px;
+  left: -30px;
+  top: -1000px;
+  -moz-border-radius: 2px 2px 3px 3px;
+  -webkit-border-radius: 2px 2px 3px 3px;
+  border-radius: 2px 2px 3px 3px;
+  overflow: visible !important;
+  -moz-box-shadow: -11px 0px 0px 0 rgba(0,0,0,.25) inset;
+  -webkit-box-shadow: 21px 0px 0px 14px rgba(0,0,0,.25) inset;
+}
+
+.candle.visible {
+  top: -250px;
+}
+
+.candle.right {
+  left: auto;
+  right: -30px;
+}
+
+.wick {
+  border: 1px solid #ccc;
+  width: 5px;
+  background-color: #fff;
+  position: absolute;
+  left: 11px;
+  top: -18px;
+  height: 20px;
+  -moz-transition: background-color .5s;
+  -webkit-transition: background-color .5s;
+  transition: background-color .5s;
+}
+
+.wick.lit {
+  border: none;
+  background-color: #000;
+}
+
+.flame {
+  width: 20px;
+  height: 26px;
+  -moz-border-radius: 13px;
+  -webkit-border-radius: 13px;
+  border-radius: 13px;
+  background-color: #ffee55;
+  position: absolute;
+  margin-left: -7px;
+  margin-top: -15px;
+  -moz-box-shadow: 0 0 5px #ffee55;
+  -webkit-box-shadow: 0 0 5px #ffee55;
+  box-shadow: 0 0 5px #ffee55;
+}
+
+#shamash {
+  cursor: move;
+}
+
+#shamash .wick {
+  cursor: pointer;
+}
+
+#shamash .wick.lit {
+  cursor: default;
+}
+
+#instructions {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 300px;
+}
+
+#copyright {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
