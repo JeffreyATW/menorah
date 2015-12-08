@@ -225,6 +225,12 @@ $(function() {
     case 2015:
       day = getDay(day, dateObj, 11, 6, 14);
       break;
+    case 2016:
+      day = getDay(day, dateObj, 11, 24, 32);
+      break;
+    case 2017:
+      day = getDay(day, dateObj, 11, 12, 20);
+      break;
   }
   var numCandles = 1;
   var candleAppear = setInterval(function() {
