@@ -34,7 +34,7 @@ function Candle(number) {
         // else keep rotate as is
         rotate = Math.abs(rotate) > 45 ? 45 * (rotate / Math.abs(rotate)) : rotate
 
-        $(this).rotate(rotate + 'deg');
+        $(this).css('transform', 'rotate(' + rotate + 'deg)');
 
         if (candle.wick.lit) {
           for (i in candles) {
@@ -47,6 +47,7 @@ function Candle(number) {
         }
       },
       stop: function(event, ui) {
+        $(this).css('transform', 'rotate(0)');
       }
     });
     $(document).mouseup(function() {
@@ -140,7 +141,7 @@ function Wick(candle) {
       }
       var flame = $('<div>').addClass('flame');
       flame.css('z-index', self.candle.element.css('z-index'));
-      flame.scale(Math.random() / 2.5 + .80);
+      flame.css('transform', 'scale(' + (Math.random() / 2.5 + .80) + ')');
       flame.offset(self.getActualOffset());
       $('body').append(flame);
       flame.animate(
