@@ -135,10 +135,7 @@ function Wick(candle) {
 
   this.burn = function() {
     var self = this;
-    var burnination = setInterval(function() {
-      if (self.element.offset().top == 0 && self.element.offset().left == 0) {
-        clearInterval(burnination);
-      }
+    var burnination = function() {
       var flame = $('<div>').addClass('flame');
       flame.css('z-index', self.candle.element.css('z-index'));
       flame.css('transform', 'scale(' + (Math.random() / 2.5 + .80) + ')');
@@ -149,7 +146,11 @@ function Wick(candle) {
         {complete: function() {
           $(this).remove();
         }, duration: 250, easing: 'easeInQuad'});
-    }, 5);
+      if (self.element.offset().top !== 0 && self.element.offset().left !== 0) {
+        window.requestAnimationFrame(burnination);
+      }
+    };
+    window.requestAnimationFrame(burnination);
     setTimeout(function() {
       self.candle.melt();
     }, 600);
