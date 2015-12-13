@@ -194,52 +194,50 @@ function getDay(day, dateObj, month, start, end) {
   return day;
 }
 
-$(function() {
-  // Remove ridge border-style in Firefox. Looks hideous.
-  if (navigator.userAgent.indexOf('Firefox') != -1) {
-    $('.branch').css('border-style', 'solid');
-  }
+// Remove ridge border-style in Firefox. Looks hideous.
+if (navigator.userAgent.indexOf('Firefox') != -1) {
+  $('.branch').css('border-style', 'solid');
+}
 
-  var shamash = new Candle(0);
-  shamash.appear();
+var shamash = new Candle(0);
+shamash.appear();
 
-  var dateObj = new Date();
-  // start day as 8
-  var day = 8;
-  switch (dateObj.getFullYear()) {
-    case 2010:
-      day = getDay(day, dateObj, 11, 1, 9);
-      break;
-    case 2011:
-      day = getDay(day, dateObj, 11, 20, 28);
-      break;
-    case 2012:
-      day = getDay(day, dateObj, 11, 8, 16);
-      break;
-    case 2013:
-      day = getDay(day, dateObj, 10, 27, 31);
-      day = getDay(day, dateObj, 11, -3, 5);
-      break;
-    case 2014:
-      day = getDay(day, dateObj, 11, 16, 24);
-      break;
-    case 2015:
-      day = getDay(day, dateObj, 11, 6, 14);
-      break;
-    case 2016:
-      day = getDay(day, dateObj, 11, 24, 32);
-      break;
-    case 2017:
-      day = getDay(day, dateObj, 11, 12, 20);
-      break;
+var dateObj = new Date();
+// start day as 8
+var day = 8;
+switch (dateObj.getFullYear()) {
+  case 2010:
+    day = getDay(day, dateObj, 11, 1, 9);
+    break;
+  case 2011:
+    day = getDay(day, dateObj, 11, 20, 28);
+    break;
+  case 2012:
+    day = getDay(day, dateObj, 11, 8, 16);
+    break;
+  case 2013:
+    day = getDay(day, dateObj, 10, 27, 31);
+    day = getDay(day, dateObj, 11, -3, 5);
+    break;
+  case 2014:
+    day = getDay(day, dateObj, 11, 16, 24);
+    break;
+  case 2015:
+    day = getDay(day, dateObj, 11, 6, 14);
+    break;
+  case 2016:
+    day = getDay(day, dateObj, 11, 24, 32);
+    break;
+  case 2017:
+    day = getDay(day, dateObj, 11, 12, 20);
+    break;
+}
+var numCandles = 1;
+var candleAppear = setInterval(function() {
+  var candle = new Candle(numCandles);
+  candle.appear();
+  numCandles++;
+  if (numCandles > day) {
+    clearInterval(candleAppear);
   }
-  var numCandles = 1;
-  var candleAppear = setInterval(function() {
-    var candle = new Candle(numCandles);
-    candle.appear();
-    numCandles++;
-    if (numCandles > day) {
-      clearInterval(candleAppear);
-    }
-  }, 100);
-});
+}, 100);
