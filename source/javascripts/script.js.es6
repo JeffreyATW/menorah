@@ -10,11 +10,13 @@ const candles = {
   'shamash': null
 }
 
+const isFirefox = navigator.userAgent.indexOf('Firefox') !== -1;
+
 class Candle {
   constructor(number) {
     this.number = number;
     this.wick = new Wick(this);
-    this.element = $('<div>').addClass('candle');
+    this.element = $('<div class="candle">');
     this.element.append(this.wick.element);
     this.position = 0;
     
@@ -48,11 +50,11 @@ class Candle {
           }
         },
         stop: function (event, ui) {
-          $(this).css('transform', 'rotate(0)');
+          candle.element.css('transform', 'rotate(0)');
         }
       });
       $(document).mouseup(() => {
-        $(candle.element).animate({
+        candle.element.animate({
           rotate: '0deg'
         }, {duration: 500, queue: false});
       });
@@ -78,20 +80,21 @@ class Candle {
 
     $(this.container).append(this.element);
     this.element.css('background-color', `hsl(${Math.floor(Math.random() * 360)}, 75%, 75%)`);
-    this.element.css('z-index', this.number > 0 ? this.number : 10);
+    this.zIndex = this.number > 0 ? this.number : 10;
+    this.element.css('z-index', this.zIndex);
     this.element.addClass('visible', 500, 'easeInQuad');
   }
 
   melt() {
+    const self = this;
     // life is 1 hour, plus up to an hour.
-    const life = Math.floor(3200000 + Math.random() * 3200000) 
-    this.element.animate({height: 0}, {duration: life, step: function () {
-      const $this = $(this);
-      if (!$this.hasClass('ui-draggable-dragging')) {
-        $this.css('top', $this.height() * -1);
+    const life = Math.floor(3200000 + Math.random() * 3200000);
+    self.element.animate({height: 0}, {duration: life, step: (now, tween) => {
+      if (!self.element.hasClass('ui-draggable-dragging')) {
+        self.element.css('top', tween.now * -1);
       }
-    }, complete: function () {
-      $(this).remove();
+    }, complete: () => {
+      self.element.remove();
     }, queue: false, easing: 'linear'});
   }
 }
@@ -114,18 +117,11 @@ class Wick {
   // We need to correct for Firefox's poor handling of transformed offset.
   // Only do this for shamash - other candles don't rotate.
   getActualOffset() {
-    if (this.candle.number === 0 && navigator.userAgent.indexOf('Firefox') !== -1) {
-      const rotation_offset = getOffsetAfterRotation(
-        this.candle.element.offset().left + Math.floor(this.candle.element.width() / 2) + 11,
-        this.candle.element.offset().top + Math.floor(this.candle.element.height() / 2) - 18,
-        this.candle.element.width(),
-        this.candle.element.height(),
-        Math.floor(this.candle.element.width() / 2),
-        Math.floor(this.candle.element.height() / 2),
-        parseInt(this.candle.element.rotate()),
-        false
-      )[0];
-      return {'left' : rotation_offset[0], 'top' : rotation_offset[1]};
+    if (isFirefox) {
+      return {
+        left: this.element.offset().left - this.element.width(),
+        top: this.element.offset().top - this.element.height()
+      };
     }
     return this.element.offset();
   }
@@ -140,11 +136,12 @@ class Wick {
   burn() {
     const self = this;
     const burnination = function () {
-      const flame = $('<div class="flame">');
-      flame.css('z-index', self.candle.element.css('z-index'));
-      flame.css('transform', `scale(${Math.random() / 2.5 + .80})`);
+      const div = document.createElement('div');
+      div.className = 'flame';
+      div.setAttribute('style', `z-index: ${self.candle.zIndex}; transform: scale(${Math.random() / 2.5 + .80});`);
+      const flame = $(div);
       flame.offset(self.getActualOffset());
-      $('body').append(flame);
+      document.body.appendChild(div);
       flame.animate(
         {
           scale: "0",
@@ -153,13 +150,13 @@ class Wick {
         },
         {
           complete: function () {
-            $(this).remove();
+            this.parentNode.removeChild(this);
           },
           duration: 250,
           easing: 'easeInQuad'
         }
       );
-      if (self.element.offset().top !== 0 && self.element.offset().left !== 0) {
+      if (document.contains(self.element[0])) {
         window.requestAnimationFrame(burnination);
       }
     };
@@ -170,45 +167,12 @@ class Wick {
   }
 }
 
-const getOffsetAfterRotation = function (offset_x, offset_y, w, h, x, y, degree, round){
-
-    const rad = -degree * Math.PI * 2.0 / 360.0;
-
-    // move rectangle to (0,0) position
-    let box = [[0,0],[0,h],[w,h],[w,0]].map(p => {
-      [p[0] - x, p[1] - y];
-    });
-
-    // rotate rectangle
-    box = box.map(point =>
-      [
-        point[0] * Math.cos(rad) + point[1] * Math.sin(rad),
-        -point[0] * Math.sin(rad) + point[1] * Math.cos(rad)
-      ]
-    );
-
-    // return rectangle to turning point position
-    box = box.map(p => [p[0] + offset_x, p[1] + offset_y]);
-
-    if (round) {
-      return box.map(p => [Math.round(p[0]), Math.round(p[1])]);
-    } else {
-      return box;
-    }
-
-}
-
 const getDay = function (day, dateObj, month, start, end) {
   if (dateObj.getMonth() === month && dateObj.getDate() >= start && dateObj.getDate() < end) {
     day = dateObj.getDate() - start;
     if (dateObj.getHours() > 12) day++;
   }
   return day;
-}
-
-// Remove ridge border-style in Firefox. Looks hideous.
-if (navigator.userAgent.indexOf('Firefox') !== -1) {
-  $('.branch').css('border-style', 'solid');
 }
 
 const shamash = new Candle(0);
@@ -241,6 +205,15 @@ switch (dateObj.getFullYear()) {
     break;
   case 2017:
     day = getDay(day, dateObj, 11, 12, 20);
+    break;
+  case 2018:
+    day = getDay(day, dateObj, 11, 2, 10);
+    break;
+  case 2019:
+    day = getDay(day, dateObj, 11, 22, 30);
+    break;
+  case 2020:
+    day = getDay(day, dateObj, 11, 10, 18);
     break;
 }
 let numCandles = 1;
