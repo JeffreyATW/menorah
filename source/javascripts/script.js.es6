@@ -14,21 +14,22 @@ const isFirefox = navigator.userAgent.indexOf('Firefox') !== -1;
 
 class Candle {
   constructor(number) {
-    this.number = number;
-    this.wick = new Wick(this);
-    this.element = $('<div class="candle">');
-    this.element.append(this.wick.element);
-    this.position = 0;
+    const candle = this;
+    candle.number = number;
+    candle.wick = new Wick(candle);
+    candle.element = $('<div class="candle">');
+    candle.element.append(candle.wick.element);
+    candle.position = 0;
     
-    if (this.number === 0) {
-      this.id = 'shamash';
-      this.container = '#branch_middle';
-      const candle = this;
+    if (candle.number === 0) {
+      candle.id = 'shamash';
+      candle.container = '#branch_middle';
       candle.element.draggable({
         revert: true,
         revertDuration: 500,
         start: function (event, ui) {
           candle.position = ui.position.left;
+          candle.dragging = true;
         },
         drag: function (event, ui) {
           let rotate = ((ui.position.left + candle.position) / 300) * 45;
@@ -51,6 +52,7 @@ class Candle {
         },
         stop: function (event, ui) {
           candle.element.css('transform', 'rotate(0)');
+          candle.dragging = false;
         }
       });
       $(document).mouseup(() => {
@@ -63,34 +65,38 @@ class Candle {
       });
     } else {
       let container_number;
-      this.id = `candle_${number}`;
+      candle.id = `candle_${number}`;
       // first four candles go on the right.
-      if (this.number > 4) {
-        container_number = 9 - this.number;
+      if (candle.number > 4) {
+        container_number = 9 - candle.number;
       } else {
-        container_number = this.number;
-        this.element.addClass('right');
+        container_number = candle.number;
+        candle.element.addClass('right');
       }
-      this.container = `#branch_${container_number}`;
+      candle.container = `#branch_${container_number}`;
     }
     
-    candles[this.id] = this;
+    candles[candle.id] = candle;
     
-    this.element.attr('id', this.id);
+    candle.element.attr('id', candle.id);
 
-    $(this.container).append(this.element);
-    this.element.css('background-color', `hsl(${Math.floor(Math.random() * 360)}, 75%, 75%)`);
-    this.zIndex = this.number > 0 ? this.number : 10;
-    this.element.css('z-index', this.zIndex);
-    this.element.addClass('visible', 500, 'easeInQuad');
+    $(candle.container).append(candle.element);
+    candle.element.css('background-color', `hsl(${Math.floor(Math.random() * 360)}, 75%, 75%)`);
+    candle.zIndex = candle.number > 0 ? candle.number : 10;
+    candle.element.css('z-index', candle.zIndex);
+    candle.element.addClass('visible', 500, 'easeInQuad', function () {
+      candle.wick.cachedOffset = candle.wick.element.offset();
+    });
   }
 
   melt() {
     const self = this;
     // life is 1 hour, plus up to an hour.
     const life = Math.floor(3200000 + Math.random() * 3200000);
+    const initialOffsetTop = self.wick.cachedOffset.top;
     self.element.animate({height: 0}, {duration: life, step: (now, tween) => {
       if (!self.element.hasClass('ui-draggable-dragging')) {
+        self.wick.cachedOffset.top = initialOffsetTop + tween.pos;
         self.element.css('top', tween.now * -1);
       }
     }, complete: () => {
@@ -104,6 +110,8 @@ class Wick {
     this.candle = candle;
     this.lit = false;
     this.element = $('<div>').addClass('wick');
+    this.height = this.element.height();
+    this.width = this.element.width();
   }
   
   light() {
@@ -117,18 +125,25 @@ class Wick {
   // We need to correct for Firefox's poor handling of transformed offset.
   // Only do this for shamash - other candles don't rotate.
   getActualOffset() {
+    let offset;
+    if (this.candle.dragging) {
+      offset = this.element.offset();
+    } else {
+      offset = this.cachedOffset; 
+    }
     if (isFirefox) {
       return {
-        left: this.element.offset().left - this.element.width(),
-        top: this.element.offset().top - this.element.height()
+        left: offset.left - this.width,
+        top: offset.top - this.height
       };
     }
-    return this.element.offset();
+    return offset;
   }
 
   listen(shamashWickOffset) {
-    if (Math.abs(this.element.offset().left - shamashWickOffset.left) < 15 &&
-        Math.abs(this.element.offset().top - shamashWickOffset.top) < 15) {
+    const offset = this.element.offset();
+    if (Math.abs(offset.left - shamashWickOffset.left) < 15 &&
+        Math.abs(offset.top - shamashWickOffset.top) < 15) {
       this.light();
     }
   }
