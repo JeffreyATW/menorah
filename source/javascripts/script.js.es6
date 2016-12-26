@@ -153,7 +153,8 @@ class Wick {
     const burnination = function () {
       const div = document.createElement('div');
       div.className = 'flame';
-      div.setAttribute('style', `z-index: ${self.candle.zIndex}; transform: scale(${Math.random() / 2.5 + .80});`);
+      // add display: block to speed up jQuery animation
+      div.setAttribute('style', `display: block; z-index: ${self.candle.zIndex}; transform: scale(${Math.random() / 2.5 + .80});`);
       const flame = $(div);
       flame.offset(self.getActualOffset());
       document.body.appendChild(div);
