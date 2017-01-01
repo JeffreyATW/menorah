@@ -86,6 +86,10 @@ class Candle {
     candle.element.css('z-index', candle.zIndex);
     candle.element.addClass('visible', 500, 'easeInQuad', function () {
       candle.wick.cachedOffset = candle.wick.element.offset();
+
+      $(window).resize(() => {
+        candle.wick.cachedOffset = candle.wick.element.offset();
+      });
     });
   }
 
