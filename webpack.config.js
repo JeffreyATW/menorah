@@ -10,6 +10,7 @@ module.exports = {
   plugins: [
     new CopyPlugin([
       { from: 'public' },
+      { from: 'source/images', to: 'images' },
     ]),
   ],
 }
