@@ -1,3 +1,12 @@
+import jQuery from 'jquery';
+import hebcal from '../vendor/hebcal.noloc.min';
+
+window.jQuery = jQuery;
+window.$ = jQuery;
+
+require('../vendor/jquery-ui');
+require('./jquery.ui.touch-punch');
+
 const candles = {
   'candle_1': null,
   'candle_2': null,
@@ -41,7 +50,7 @@ class Candle {
           $(this).css('transform', `rotate(${rotate}deg)`);
 
           if (candle.wick.lit) {
-            for (i in candles) {
+            for (let i in candles) {
               if (candles[i] !== null && i !== "shamash") {
                 if (!candles[i].wick.lit) {
                   candles[i].wick.listen(candle.wick.getActualOffset());
@@ -187,55 +196,26 @@ class Wick {
   }
 }
 
-const getDay = function (day, dateObj, month, start, end) {
-  if (dateObj.getMonth() === month && dateObj.getDate() >= start && dateObj.getDate() < end) {
-    day = dateObj.getDate() - start;
-    if (dateObj.getHours() > 12) day++;
-  }
-  return day;
-}
-
 const shamash = new Candle(0);
 
 const dateObj = new Date();
+// add 12 hours so anytime after noon is the next day
+dateObj.setTime(dateObj.getTime() + 12*60*60*1000)
+
 // start day as 8
 let day = 8;
-switch (dateObj.getFullYear()) {
-  case 2010:
-    day = getDay(day, dateObj, 11, 1, 9);
-    break;
-  case 2011:
-    day = getDay(day, dateObj, 11, 20, 28);
-    break;
-  case 2012:
-    day = getDay(day, dateObj, 11, 8, 16);
-    break;
-  case 2013:
-    day = getDay(day, dateObj, 10, 27, 31);
-    day = getDay(day, dateObj, 11, -3, 5);
-    break;
-  case 2014:
-    day = getDay(day, dateObj, 11, 16, 24);
-    break;
-  case 2015:
-    day = getDay(day, dateObj, 11, 6, 14);
-    break;
-  case 2016:
-    day = getDay(day, dateObj, 11, 24, 32);
-    break;
-  case 2017:
-    day = getDay(day, dateObj, 11, 12, 20);
-    break;
-  case 2018:
-    day = getDay(day, dateObj, 11, 2, 10);
-    break;
-  case 2019:
-    day = getDay(day, dateObj, 11, 22, 30);
-    break;
-  case 2020:
-    day = getDay(day, dateObj, 11, 10, 18);
-    break;
+
+const holidays = Hebcal.HDate(dateObj).holidays();
+
+if (holidays.length) {
+  holidays.forEach((holiday) => {
+    const desc = holiday.desc[0];
+    if (desc) {
+      day = parseInt(desc[desc.length - 1]);
+    }
+  })
 }
+
 let numCandles = 1;
 const candleAppear = setInterval(function () {
   const candle = new Candle(numCandles);

@@ -1,0 +1,30 @@
+{
+  "name": "menorah",
+  "version": "1.0.0",
+  "description": "An HTML5 menorah",
+  "main": "source/javascripts/index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server --open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeffreyATW/menorah.git"
+  },
+  "author": "Jeffrey Carl Faden",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JeffreyATW/menorah/issues"
+  },
+  "homepage": "https://github.com/JeffreyATW/menorah#readme",
+  "dependencies": {
+    "jquery": "^3.4.1"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^5.1.1",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
+  }
+}
