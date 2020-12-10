@@ -1,62 +1,74 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-<title>HTML Hanukkah Menorah</title>
-<meta property="og:url" content="http://jeffreyatw.com/static/menorah/">
-<meta property="og:title" content="Hanukkah Menorah">
-<meta property="og:type" content="website">
-<meta property="og:image" content="http://jeffreyatw.com/static/menorah/images/og_image.png">
-<meta property="og:description" content="Get festive with an accurate Hanukkah menorah, with candles that melt!">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@jeffreyatw">
-<meta name="twitter:creator" content="@jeffreyatw">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div id="menorah">
-  <div class="branch branch_pair" id="branch_1">
-    <div class="hole" id="hole_1"></div>
-    <div class="hole right" id="hole_8"></div>
-    <div class="branch branch_pair" id="branch_2">
-      <div class="hole" id="hole_2"></div>
-      <div class="hole right" id="hole_7"></div>
-      <div class="branch branch_pair" id="branch_3">
-        <div class="hole" id="hole_3"></div>
-        <div class="hole right" id="hole_6"></div>
-        <div class="branch branch_pair" id="branch_4">
-          <div class="hole" id="hole_4"></div>
-          <div class="hole right" id="hole_5"></div>
-          <div class="branch" id="branch_middle">
-            <div class="hole" id="hole_middle"></div>
+  <head>
+    <title>HTML Hanukkah Menorah</title>
+    <meta property="og:url" content="http://jeffreyatw.com/static/menorah/" />
+    <meta property="og:title" content="Hanukkah Menorah" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="http://jeffreyatw.com/static/menorah/images/og_image.png"
+    />
+    <meta
+      property="og:description"
+      content="Get festive with an accurate virtual Hanukkah menorah, with candles that melt!"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@jeffreyatw" />
+    <meta name="twitter:creator" content="@jeffreyatw" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="menorah">
+      <div class="branch branch_pair" id="branch_1">
+        <div class="hole" id="hole_1"></div>
+        <div class="hole right" id="hole_8"></div>
+        <div class="branch branch_pair" id="branch_2">
+          <div class="hole" id="hole_2"></div>
+          <div class="hole right" id="hole_7"></div>
+          <div class="branch branch_pair" id="branch_3">
+            <div class="hole" id="hole_3"></div>
+            <div class="hole right" id="hole_6"></div>
+            <div class="branch branch_pair" id="branch_4">
+              <div class="hole" id="hole_4"></div>
+              <div class="hole right" id="hole_5"></div>
+              <div class="branch" id="branch_middle">
+                <div class="hole" id="hole_middle"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+      <div id="base"></div>
     </div>
-  </div>
-  <div id="base"></div>
-</div>
-<ul id="instructions">
-  <li>Click the <i>shamash</i> (middle candle) to light it.</li>
-  <li>Recite tonight's blessings.</li>
-  <li>Drag the <i>shamash</i> to light the other candles, from left to right.</li>
-  <li>Happy Hanukkah!</li>
-</ul>
-<address id="copyright">
-&copy; <a href="http://www.jeffreyatw.com">Jeffrey Carl Faden</a>
-</address>
-<script src="main.js"></script>
-<script type="text/javascript">
+    <ul id="instructions">
+      <li>Click the <i>shamash</i> (middle candle) to light it.</li>
+      <li>Recite tonight's blessings.</li>
+      <li>
+        Drag the <i>shamash</i> to light the other candles, from left to right.
+      </li>
+      <li>Happy Hanukkah!</li>
+    </ul>
+    <address id="copyright">
+      &copy; <a href="http://www.jeffreyatw.com">Jeffrey Carl Faden</a>
+    </address>
+    <script src="main.js"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(["_setAccount", "UA-134118-2"]);
+      _gaq.push(["_trackPageview"]);
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-134118-2']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-</body>
+      (function () {
+        var ga = document.createElement("script");
+        ga.type = "text/javascript";
+        ga.async = true;
+        ga.src =
+          ("https:" == document.location.protocol
+            ? "https://ssl"
+            : "http://www") + ".google-analytics.com/ga.js";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
 </html>
