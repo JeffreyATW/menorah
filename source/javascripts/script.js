@@ -120,7 +120,8 @@ class Candle {
         duration: life,
         step: (now, tween) => {
           if (!self.element.hasClass("ui-draggable-dragging")) {
-            self.wick.cachedOffset.top = initialOffsetTop + tween.pos;
+            self.wick.cachedOffset.top =
+              initialOffsetTop + (tween.start - tween.now);
             self.element.css("top", tween.now * -1);
           }
         },
