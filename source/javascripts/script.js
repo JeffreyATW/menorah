@@ -237,7 +237,7 @@ class Wick {
   }
 }
 
-candles.shamash = new Candle(0);
+new Candle(0);
 
 const dateObj = new Date();
 // add 12 hours so anytime after noon is the next day
@@ -259,7 +259,7 @@ if (holidays.length) {
 
 let numCandles = 1;
 const candleAppear = setInterval(function () {
-  const candle = new Candle(numCandles);
+  new Candle(numCandles);
   numCandles++;
   if (numCandles > day) {
     clearInterval(candleAppear);
