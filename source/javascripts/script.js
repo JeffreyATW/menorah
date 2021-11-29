@@ -191,36 +191,44 @@ class Wick {
 
   burn() {
     const self = this;
+    let on = true;
     const burnination = function () {
-      const div = document.createElement("div");
-      div.className = "flame";
-      // add display: block to speed up jQuery animation
-      div.setAttribute(
-        "style",
-        `display: block; z-index: ${self.candle.zIndex}; transform: scale(${
-          Math.random() / 2.5 + 0.8
-        });`
-      );
-      const flame = $(div);
-      flame.offset(self.getActualOffset());
-      document.body.appendChild(div);
-      flame.animate(
-        {
-          scale: "0",
-          top: "-=50px",
-          opacity: ".5",
-        },
-        {
-          complete: function () {
-            this.parentNode.removeChild(this);
+      if (on) {
+        const div = document.createElement("div");
+        div.className = "flame";
+        // add display: block to speed up jQuery animation
+        div.setAttribute(
+          "style",
+          `display: block; z-index: ${self.candle.zIndex}; transform: scale(${
+            Math.random() / 2.5 + 0.8
+          });`
+        );
+        const flame = $(div);
+        flame.offset(self.getActualOffset());
+        document.body.appendChild(div);
+        flame.animate(
+          {
+            top: "-=50px",
+            opacity: ".5",
           },
-          duration: 250,
-          easing: "easeInQuad",
-        }
-      );
+          {
+            complete: function () {
+              this.parentNode.removeChild(this);
+            },
+            duration: 250,
+            easing: "easeInQuad",
+            step: (now) => {
+              if (now < 1) {
+                flame.css('transform', `scale(${now})`)
+              }
+            }
+          }
+        );
+      }
       if (self.element[0].parentNode.parentNode) {
         window.requestAnimationFrame(burnination);
       }
+      on = !on;
     };
     window.requestAnimationFrame(burnination);
     setTimeout(() => {
