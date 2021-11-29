@@ -218,7 +218,7 @@ class Wick {
           easing: "easeInQuad",
         }
       );
-      if (document.contains(self.element[0])) {
+      if (self.element[0].parentNode.parentNode) {
         window.requestAnimationFrame(burnination);
       }
     };
