@@ -21,6 +21,7 @@ const candles = {
 
 const isFirefox = navigator.userAgent.indexOf("Firefox") !== -1;
 
+const revertDuration = 500;
 class Candle {
   constructor(number) {
     const candle = this;
@@ -29,26 +30,42 @@ class Candle {
     candle.element = $('<div class="candle">');
     candle.element.append(candle.wick.element);
     candle.position = 0;
+    candle.rotation = 0;
 
     if (candle.number === 0) {
       candle.id = "shamash";
       candle.container = "#branch_middle";
       candle.element.draggable({
-        revert: true,
-        revertDuration: 500,
-        start: function (event, ui) {
+        revert: () => {
+          candle.element.css({ rotation: 0 });
+          candle.element.animate({
+            rotation: candle.rotation
+          }, {
+            complete: () => {
+              candle.rotation = 0;
+            },
+            duration: revertDuration,
+            queue: false,
+            step: (now) => {
+              candle.element.css('transform', `rotate(${candle.rotation - now}deg)`);
+            },
+          });
+          return true;
+        },
+        revertDuration,
+        start: function (_event, ui) {
           candle.position = ui.position.left;
           candle.dragging = true;
         },
-        drag: function (event, ui) {
-          let rotate = ((ui.position.left + candle.position) / 300) * 45;
+        drag: function (_event, ui) {
+          const rotation = ((ui.position.left + candle.position) / 300) * 45;
           // if rotate is more than 45 either way,
           // stop at either negative or positive 45
           // else keep rotate as is
-          rotate =
-            Math.abs(rotate) > 45 ? 45 * (rotate / Math.abs(rotate)) : rotate;
+          candle.rotation =
+            Math.abs(rotation) > 45 ? 45 * (rotation / Math.abs(rotation)) : rotation;
 
-          $(this).css("transform", `rotate(${rotate}deg)`);
+          candle.element.css("transform", `rotate(${candle.rotation}deg)`);
 
           if (candle.wick.lit) {
             for (let i in candles) {
@@ -60,18 +77,10 @@ class Candle {
             }
           }
         },
-        stop: function (event, ui) {
+        stop: function () {
           candle.element.css("transform", "rotate(0)");
           candle.dragging = false;
         },
-      });
-      $(document).mouseup(() => {
-        candle.element.animate(
-          {
-            rotate: "0deg",
-          },
-          { duration: 500, queue: false }
-        );
       });
       candle.element.click(() => {
         candle.wick.light();
@@ -220,7 +229,7 @@ class Wick {
   }
 }
 
-const shamash = new Candle(0);
+candles.shamash = new Candle(0);
 
 const dateObj = new Date();
 // add 12 hours so anytime after noon is the next day
